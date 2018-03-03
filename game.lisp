@@ -4,7 +4,7 @@
 (defun ggg (y x) (
 				 if (not (ignore-errors(aref current_grid y x)))
 					  -1
-					  1 
+					  1
 				  ))
 
 (defun get_sum (y x) (
@@ -16,10 +16,10 @@
 										(not (and (= j y) (= i x))) ; Not on the current cell
 										;; (= (ignore-errors (aref current_grid j i)) 1) ; && Neighbor is alive
 										(= (ggg j i) 1) ;; need correction
-										) 
+										)
 									   (setq sum (+ sum 1)) ; Then Add 1 to alive neighbor count
 									   ;; () ; else statement
-									   
+
 									   )))
 					   sum
 					   ))
@@ -47,7 +47,7 @@
 									 )
 							   )))
 				 (setq current_grid next_grid)
-				 )) 
+				 ))
 
 
 
