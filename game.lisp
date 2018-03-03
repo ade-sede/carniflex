@@ -7,8 +7,10 @@
 	;;et decide de draw ou pas
 
 	;;DEBUG
-	(draw X 0) ;;draw on screen
-	(setq X (+ X 1))
+	(draw 0 5 ALIVE) ;;draw on screen
+	(draw 10 10 ALIVE) ;;draw on screen
+	(draw 15 15 ALIVE) ;;draw on screen
+	(draw 1 1 ALIVE) ;;draw on screen
 ))
 
 ;;(defun init (n m) (
