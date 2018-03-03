@@ -6,11 +6,11 @@
 
 
 
-(defun parse () (if (or	
+(defun parse () (if (or
 					 (not *posix-argv*) ; No argv
 					 (/= (list-length *posix-argv*) 3) ; Not exactly 2 arguments
 					 (not (and ; Arguments are not positiv integers
-						   (typep (ignore-errors (parse-integer (nth 1 *posix-argv*))) 'integer) 
+						   (typep (ignore-errors (parse-integer (nth 1 *posix-argv*))) 'integer)
 						   (typep (ignore-errors (parse-integer (nth 2 *posix-argv*))) 'integer)
 						   (< 0 (ignore-errors (parse-integer (nth 1 *posix-argv*))))
 						   (< 0 (ignore-errors (parse-integer (nth 2 *posix-argv*))))
@@ -38,6 +38,7 @@
 					  (sdl:with-events ()
 						(:quit-event () t)
 						(:key-down-event (:key key) (handle-key key))
+						(:mouse-button-up-event (:button button :x x :y y) (handle-click-mouse button x y))
 						(:idle ()
 							   (sdl:clear-display COLOR_BACKGROUND)
 							   (game)

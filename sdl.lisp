@@ -35,11 +35,32 @@
 	;;check keys here: https://gitlab.com/dto/xelf/blob/master/keys.lisp
 )
 
+(defun handle-click-mouse (button x y) (
+	let (
+		(bx (truncate (/ x csize)))
+		(by (truncate (/ y csize)))
+	)
+	;; (format t "x ~d y ~d ~%" bx by)
+		(let (
+			(sx (+ (* bx csize) margin))
+			(sy (+ (* by csize) margin))
+		)
+			(let (
+				(sx2 (- (+ sx csize) margin))
+				(sy2 (- (+ sy csize) margin))
+			)
+			(if (and (and (>= x sx) (<= x sx2)) (and (>= y sy) (<= y sy2)) )
+				(progn (setf (aref current_grid by bx) ALIVE) (draw by bx ALIVE)) ;;in
+				(format t "OUT ~%" sx sy) ;;out
+			)
+		))
+))
+
 ;;DRAW on screen
 (defun draw (y x kind) (
 	let (
-		(sx (+ (* zoom (* x csize)) margin))
-		(sy (+ (* zoom (* y csize)) margin))
+		(sx (+ (* x csize) margin))
+		(sy (+ (* y csize) margin))
 	)
 	(sdl:draw-box
 		(sdl:rectangle-from-edges-* sx sy

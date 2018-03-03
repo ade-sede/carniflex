@@ -34,7 +34,8 @@
 				;;; Else -> State unchanged next turn
 
 				let ((sum 0))
-				 (format t "~% Current grid when entering the game ~% -------------------- ~% ~A" current_grid)
+				 ;; (format t "~% Current grid when entering the game ~% -------------------- ~% ~A" current_grid)
+				 (format t "~D ~%" (aref current_grid 0 0))
 				 (loop for y from 0 to (- N 1)
 					do (loop for x from 0 to (- M 1)
 						  do (
