@@ -29,6 +29,8 @@ Note: Integers are 'one-indexed'")
 (defun main (argv)(
 				   let ()
 					;; SDL stuff
+					(setq M (parse-integer (nth 1 *posix-argv*)))
+					(setq N (parse-integer (nth 2 *posix-argv*)))
 					(sdl:with-init ()
 					  (sdl:window width height :title-caption "Carniflex")
 					  (sdl:update-display)
