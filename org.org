@@ -1,0 +1,38 @@
+* Init
+  Steps of init.
+** Grid parsing
+   Get the grid's dimensions, verify its validity. Failure is fatal
+   Get the cycle duration (defaults to 1sec)
+** Grid init
+   Create an empty 2D grid (2D array of integers), all defaulting to 0 (dead cell)
+** Window init
+   Create the graphical window (details to come)
+** Enter main loop
+*** Main loop
+	Core of the algorithm.
+	The loop currently executing is referred to as loop t + 0, the next loop executing is t + 1
+**** Read user input
+	 Wait during a given duration, read all of the user's input and take action.
+	 - '>' -> Decrease cycle duration by 10% of its current value
+       starting at loop t + 1. Current wait time left is decreased by 10%
+       of its original value if not in pause ?
+	 - '<' -> Increase cycle duration by 10% of its current value
+       starting at loop t + 1. Current wait time left is decreased by 10%
+       of its original value if not in pause ?
+	 - 'p' -> Toggles pause mode, stoping/starting the wait timer
+	 - 'esc' or closing window -> terminate programm
+	 - "wasd" -> scroll the graphical window if grid is larger than
+       the window. We must keep in a variable the offset on x and y
+       axis in px.
+	 - click -> inverts the state of the cell under the cursor
+       (implies calculating which sell we are on depending on the
+       coordinates of the click -> {(coor_x * x_size) + x_offset ; (coor_y * y_size) + y_offset}
+	 - 'r' -> clears the grid both in memory and in the window. Starts pause if not already in pause mode
+**** Compute next state of each cell
+	 Cycle through the grid, x axis first. For each cell with coordinates {x;y}, compute its next state
+	 get_next_state(current_grid, cell_x, cell_y) {
+	 
+}
+***** Next state computation algorithm
+	  if (current cell is alive)
+**** Update both graphically and in memory
