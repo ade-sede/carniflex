@@ -21,6 +21,8 @@
 
 (defun main (argv)(
 				   let ()
+
+
 					;; Update grid dimensions
 					(setq M (parse-integer (nth 1 *posix-argv*)))
 					(setq N (parse-integer (nth 2 *posix-argv*)))
@@ -33,14 +35,14 @@
 					(setq csize size)
 					(sdl:with-init ()
 					  (sdl:window width height :title-caption "Carniflex")
-					  (sdl:update-display)
+					  (sdl:clear-display COLOR_BACKGROUND)
+					  (redraw)
 					  (setf (sdl:frame-rate) IMAGE_PER_SEC)
 					  (sdl:with-events ()
 						(:quit-event () t)
 						(:key-down-event (:key key) (handle-key key))
 						(:mouse-button-up-event (:button button :x x :y y) (handle-click-mouse button x y))
 						(:idle ()
-							   (sdl:clear-display COLOR_BACKGROUND)
 							   (game)
 							   (sdl:update-display)
 							   )

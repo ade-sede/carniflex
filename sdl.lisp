@@ -50,8 +50,8 @@
 				(sy2 (- (+ sy csize) margin))
 			)
 			(if (and (and (>= x sx) (<= x sx2)) (and (>= y sy) (<= y sy2)) )
-				(progn (setf (aref current_grid by bx) ALIVE) (draw by bx ALIVE)) ;;in
-				(format t "OUT ~%" sx sy) ;;out
+				(progn (setf (aref current_grid by bx) ALIVE) (draw by bx ALIVE) (sdl:update-display)) ;;in
+				;; (format t "OUT ~%" sx sy) ;;out
 			)
 		))
 ))
@@ -75,7 +75,7 @@
 	loop for y from 0 to (- N 1)
 		do (loop for x from 0 to (- M 1)
 			do (if (= (aref current_grid y x) 1)
-			(draw (y x ALIVE))
-			(draw (y x DEAD))
+			(draw y x ALIVE)
+			(draw y x DEAD)
 		)
 )))
