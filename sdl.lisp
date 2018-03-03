@@ -50,7 +50,7 @@
 				(sy2 (- (+ sy csize) margin))
 			)
 			(if (and (and (>= x sx) (<= x sx2)) (and (>= y sy) (<= y sy2)) )
-				(setf (aref current_grid by bx) ALIVE) ;;in
+				(progn (setf (aref current_grid by bx) ALIVE) (draw by bx ALIVE) (print "OK") ) ;;in
 				(format t "OUT ~%" sx sy) ;;out
 			)
 		))
