@@ -18,6 +18,7 @@
 	let (
 		(sx (* zoom (* x size)))
 		(sy (* zoom (* y size)))
+	)
 	(sdl:draw-box
 		(sdl:rectangle-from-edges-* sx sy (+ sx size) (+ sy size))
 		:color (if (= kind DEAD) COLOR_DEAD COLOR_ALIVE)
