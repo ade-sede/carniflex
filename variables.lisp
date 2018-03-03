@@ -17,5 +17,5 @@
 (defvar offX 0)
 (defvar offY 0)
 (defvar zoom 1.0)
-(defvar margin 1)
+(defvar margin 5)
 (defvar size (/ WIDTH 16))
