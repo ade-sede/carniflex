@@ -42,10 +42,13 @@
 						(:quit-event () t)
 						(:key-down-event (:key key) (handle-key key))
 						(:mouse-button-up-event (:button button :x x :y y) (handle-click-mouse button x y))
-						(:idle ()
+						(:idle (
+							if (not PAUSE)
+							(
+								let()
 							   (game)
 							   (sdl:update-display)
-							   )
+							   )))
 						))
 					))
 

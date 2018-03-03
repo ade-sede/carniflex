@@ -26,12 +26,18 @@
 		)
 ))
 
+(defun gamePause () (
+	let ()
+	(setq PAUSE (not PAUSE))
+))
+
 ;;handle key events
 (defun handle-key (key)
 	(when (SDL:KEY= KEY :SDL-KEY-ESCAPE) (SDL:PUSH-QUIT-EVENT))
 	(when (SDL:KEY= KEY :SDL-KEY-a) (zoomIn))
 	(when (SDL:KEY= KEY :SDL-KEY-left) (speedDown))
 	(when (SDL:KEY= KEY :SDL-KEY-right) (speedUp))
+	(when (SDL:KEY= KEY :SDL-KEY-p) (gamePause))
 	;;check keys here: https://gitlab.com/dto/xelf/blob/master/keys.lisp
 )
 

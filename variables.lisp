@@ -23,6 +23,7 @@ Note: Integers are `one-indexed`")
 (defvar COLOR_BACKGROUND (sdl:color :r 255 :g 255 :b 255)) ;;white
 
 (defvar IMAGE_PER_SEC 1)
+(defvar PAUSE t)
 
 (defvar offX 0)
 (defvar offY 0)
