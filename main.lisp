@@ -31,25 +31,24 @@ Note: Integers are 'one-indexed'")
 					(setq N (parse-integer (nth 1 *posix-argv*)))
 					(setq M (parse-integer (nth 2 *posix-argv*)))
 					;; SDL stuff
-
+					;;(setq size (/ (max (N M)) WIDTH))
 					;; Update grid dimensions
 					(setq M (parse-integer (nth 1 *posix-argv*)))
 					(setq N (parse-integer (nth 2 *posix-argv*)))
+					(setq current_grid (make-array (list N M) :initial-contents 0)) ; Init the very first grid
 
 					(sdl:with-init ()
 					  (sdl:window width height :title-caption "Carniflex")
 					  (sdl:update-display)
-
-					  (setq current_grid (make-array (list N M) :inital-contents 0)) ; Init the very first grid
+						(setf (sdl:frame-rate) IMAGE_PER_SEC)
 					  (sdl:with-events ()
 						(:quit-event () t)
 						(:key-down-event (:key key) (handle-key key))
 						(:idle ()
-								(sdl:clear-display sdl:*black*)
-								(game 0)
-								(sdl:update-display)
-								(sleep 1)
-								)
+							   (sdl:clear-display sdl:*black*)
+							   (game 0)
+							   (sdl:update-display)
+							)
 						))
 					))
 
