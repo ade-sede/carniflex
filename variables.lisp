@@ -19,3 +19,4 @@
 (defvar zoom 1.0)
 (defvar margin 5)
 (defvar size (/ WIDTH 16))
+(defvar csize (/ WIDTH 16))

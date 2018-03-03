@@ -3,7 +3,7 @@
 (defun zoomIn () (
 	let ()
 	(setq zoom (+ zoom 0.1))
-	(setq size (* size zoom))
+	(setq csize (* size zoom))
 ))
 
 (defun speedDown () (
@@ -38,13 +38,13 @@
 ;;DRAW on screen
 (defun draw (y x kind) (
 	let (
-		(sx (+ (* zoom (* x size)) margin))
-		(sy (+ (* zoom (* y size)) margin))
+		(sx (+ (* zoom (* x csize)) margin))
+		(sy (+ (* zoom (* y csize)) margin))
 	)
 	(sdl:draw-box
 		(sdl:rectangle-from-edges-* sx sy
-			(- (+ sx size) margin)
-			(- (+ sy size) margin)
+			(- (+ sx csize) margin)
+			(- (+ sy csize) margin)
 		)
 		:color (if (= kind DEAD) COLOR_DEAD COLOR_ALIVE)
 	)
