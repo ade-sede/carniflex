@@ -49,3 +49,12 @@
 		:color (if (= kind DEAD) COLOR_DEAD COLOR_ALIVE)
 	)
 ))
+
+(defun redraw () (
+	loop for y from 0 to (- N 1)
+		do (loop for x from 0 to (- M 1)
+			do (if (= (aref current_grid y x) 1)
+			(draw (y x ALIVE))
+			(draw (y x DEAD))
+		)
+)))
