@@ -27,7 +27,9 @@ Note: Integers are 'one-indexed'")
 					))
 
 (defun main (argv)(
-				   let ()
+					let ()
+					(setq N (parse-integer (nth 1 *posix-argv*)))
+					(setq M (parse-integer (nth 2 *posix-argv*)))
 					;; SDL stuff
 
 					;; Update grid dimensions
@@ -43,11 +45,11 @@ Note: Integers are 'one-indexed'")
 						(:quit-event () t)
 						(:key-down-event (:key key) (handle-key key))
 						(:idle ()
-							   (sdl:clear-display sdl:*black*)
-							   (game 0)
-							   (sdl:update-display)
-							   (sleep 1)
-							   )
+								(sdl:clear-display sdl:*black*)
+								(game 0)
+								(sdl:update-display)
+								(sleep 1)
+								)
 						))
 					))
 
