@@ -29,11 +29,16 @@
 					;; Update grid dimensions
 					(setq M (parse-integer (nth 1 *posix-argv*)))
 					(setq N (parse-integer (nth 2 *posix-argv*)))
-					(setq current_grid (make-array (list N M))) ; Init the very first grid
-					(setq next_grid (make-array (list N M))) ; Init the very first grid
 
+					;; Init grid
+					(setq current_grid (make-array (list N M)))
+					(setq next_grid (make-array (list N M)))
+
+					;; Dummy cells
 					(setf (aref current_grid (- N 1) (- M 1)) 1)
 
+					(setq size (/ WIDTH (max N M)))
+					(setq csize size)
 					(sdl:with-init ()
 					  (sdl:window width height :title-caption "Carniflex")
 					  (sdl:update-display)
@@ -42,7 +47,7 @@
 						(:quit-event () t)
 						(:key-down-event (:key key) (handle-key key))
 						(:idle ()
-							   (sdl:clear-display sdl:*black*)
+							   (sdl:clear-display COLOR_BACKGROUND)
 							   (game)
 							   (sdl:update-display)
 							)
