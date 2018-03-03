@@ -5,13 +5,6 @@
 (load "game.lisp")
 
 
-(defvar *usage-string* "Usage: sbcl --script main.lisp height width
-
-With:		height, non-zero positiv integer, the height of the grid
-	width, non-zero positiv integer, the width of the grid
-
-Note: Integers are 'one-indexed'")
-
 
 (defun parse () (if (or	
 					 (not *posix-argv*) ; No argv
@@ -32,10 +25,14 @@ Note: Integers are 'one-indexed'")
 					(setq M (parse-integer (nth 2 *posix-argv*)))
 					;; SDL stuff
 					;;(setq size (/ (max (N M)) WIDTH))
+
 					;; Update grid dimensions
 					(setq M (parse-integer (nth 1 *posix-argv*)))
 					(setq N (parse-integer (nth 2 *posix-argv*)))
-					(setq current_grid (make-array (list N M) :initial-contents 0)) ; Init the very first grid
+					(setq current_grid (make-array (list N M))) ; Init the very first grid
+					(setq next_grid (make-array (list N M))) ; Init the very first grid
+
+					(setf (aref current_grid (- N 1) (- M 1)) 1)
 
 					(sdl:with-init ()
 					  (sdl:window width height :title-caption "Carniflex")
@@ -46,7 +43,7 @@ Note: Integers are 'one-indexed'")
 						(:key-down-event (:key key) (handle-key key))
 						(:idle ()
 							   (sdl:clear-display sdl:*black*)
-							   (game 0)
+							   (game)
 							   (sdl:update-display)
 							)
 						))

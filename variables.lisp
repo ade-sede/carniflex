@@ -5,6 +5,13 @@
 (defvar current_grid) ; The grid used as input on loop t + 0
 (defvar next_grid) ; The grid used as input on loop t + 1
 
+(defvar *usage-string* "Usage: sbcl --script main.lisp height width
+
+With:		height, non-zero positiv integer, the height of the grid
+	width, non-zero positiv integer, the width of the grid
+
+Note: Integers are `one-indexed`")
+
 (defconstant DEAD 0)
 (defconstant ALIVE 1)
 
