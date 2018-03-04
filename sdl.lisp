@@ -49,7 +49,7 @@
 	;;check keys here: https://gitlab.com/dto/xelf/blob/master/keys.lisp
 )
 
-(defun handle-click-mouse (button x y) (
+(defun handle-click-mouse (button y x) (
 	let (
 		(bx (truncate (/ x csize)))
 		(by (truncate (/ y csize)))
@@ -95,3 +95,33 @@
 			(draw y x DEAD)
 		)
 )))
+
+(defun buttonUp (button y x) (
+  (progn
+	(if (not drag)
+		(handle-click-mouse button y x)
+		)
+	(setf dragBuff (list 0 0))
+	(setf drag nil)
+	)
+  ))
+
+(defun mouseMove (y-rel x-rel state) (
+									  if (= (state) SDL-PRESSED)
+										 (progn
+										   (setf drag t)
+										   (seft (car dragBuff) (+ (car dragBuff) y-rel)) ; Add y movement
+										   (seft (car dragBuff) (+ (cdr dragBuff) x-rel)) ; Add x movement
+										   ;; If movement exceeds size of a cell, move 1 in the right direction
+										   (cond
+											 ((>= size (abs (car dragBuff))) (if (> 0 (car dragBuff))	; Up or down ?
+																				 (moveUp)				; Up
+																				 (moveDown)				; Down
+																				 ))
+											 ((>= size (abs (cdr dragBuff))) (if (> 0 (cdr dragbuff))	; Left or right ?
+																				 (moveRight)			; Right
+																				 (moveLeft)				; Left
+																			  ))
+											 )
+										   )
+					 ))

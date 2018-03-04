@@ -31,3 +31,5 @@ Note: Integers are `one-indexed`")
 (defvar margin 5)
 (defvar size (/ WIDTH 16))
 (defvar csize (/ WIDTH 16))
+(defvar drag nil) ; Boolean: Are we currently dragging ?
+(defvar dragBuff nil) ; List:Bufferise mouse movement {y;x} form

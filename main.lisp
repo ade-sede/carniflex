@@ -27,6 +27,10 @@
 					(setq M (parse-integer (nth 1 *posix-argv*)))
 					(setq N (parse-integer (nth 2 *posix-argv*)))
 
+					;; Init mouse movement buffer
+					(setq dragBuff (list 0 0))
+					(setq lastCoor (list 0 0))
+
 					;; Init grid
 					(setq current_grid (make-array (list N M)))
 					(setq next_grid (make-array (list N M)))
@@ -42,7 +46,8 @@
 					  (sdl:with-events ()
 						(:quit-event () t)
 						(:key-down-event (:key key) (handle-key key))
-						(:mouse-button-up-event (:button button :x x :y y) (handle-click-mouse button x y))
+						(:mouse-button-up-event (:button button :x x :y y) (buttonUp button y x))
+						(:mouse-motion-event (:state state :x-rel x-rel :y-rel y-rel) (mouseMove y-rel x-rel state))
 						(:idle (
 							if (not PAUSE)
 							(
