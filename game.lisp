@@ -20,10 +20,6 @@
 					   sum
 					   ))
 
-(defun my_debug (sum y x) (
-						   format t "~% Cell ~D ~D has a sum of ~D" x y sum
-								  ))
-
 (defun game () (
 				;;; For each cell, compute the number of alive
 				;;; neighboor and deduce the cell's next state. Redraw the cell, only if its next state is different from the current one
@@ -35,15 +31,11 @@
 
 				let ((sum 0))
 
-				;; (format t "~% Current grid when entering the game ~% -------------------- ~% ~A" current_grid)
-				;; (format t "~D ~%" (aref current_grid 0 0))
-
 				 (loop for y from 0 to (- N 1)
 					do (loop for x from 0 to (- M 1)
 						  do (
 							  let ()
 							   (setq sum (get_sum y x)) ; Number of alive neighboor
-							   ;;(my_debug sum y x)
 							   (setf (aref next_grid y x) (cond ; Select new state
 															((or (> 2 sum) (< 3 sum)) 0)
 															((= sum 3)  1)
@@ -51,8 +43,6 @@
 															)
 									 )
 							   )))
-
-				 ;; (format t "~% Next grid when exiting the game ~% -------------------- ~% ~A" next_grid)
 
 				(loop for y from 0 to (- N 1)
 					do (loop for x from 0 to (- M 1)
