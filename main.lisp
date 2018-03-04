@@ -29,20 +29,20 @@
 
 					;; Init mouse movement buffer
 					(setq dragBuff (list 0 0))
-					(setq lastCoor (list 0 0))
 
 					;; Init grid
 					(setq current_grid (make-array (list N M)))
 					(setq next_grid (make-array (list N M)))
 
-					(setq size (/ WIDTH (max N M)))
-					(setq csize size)
+					(setq zoom (max N M))
+					(setq size (/ WIDTH zoom))
+
 					(sdl:with-init ()
 					  (sdl:window width height :title-caption "Carniflex")
 					  (sdl:clear-display COLOR_BACKGROUND)
 					  (redraw)
 						(sdl:update-display)
-					  (setf (sdl:frame-rate) IMAGE_PER_SEC)
+					  (setf (sdl:frame-rate) 40)
 					  (sdl:with-events ()
 						(:quit-event () t)
 						(:key-down-event (:key key) (handle-key key))

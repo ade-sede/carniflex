@@ -20,16 +20,15 @@ Note: Integers are `one-indexed`")
 
 (defvar COLOR_ALIVE (sdl:color :r 255 :g 0 :b 0)) ;;red
 (defvar COLOR_DEAD (sdl:color :r 0 :g 0 :b 0)) ;;black
-(defvar COLOR_BACKGROUND (sdl:color :r 255 :g 255 :b 255)) ;;white
+(defvar COLOR_BACKGROUND (sdl:color :r 0 :g 0 :b 255)) ;;white
 
-(defvar IMAGE_PER_SEC 1)
+(defvar IMAGE_PER_SEC 50)
 (defvar PAUSE t)
 
 (defvar offX 0)
 (defvar offY 0)
-(defvar zoom 1.0)
-(defvar margin 5)
+(defvar zoom 0)
+(defvar margin 0)
 (defvar size (/ WIDTH 16))
-(defvar csize (/ WIDTH 16))
 (defvar drag nil) ; Boolean: Are we currently dragging ?
 (defvar dragBuff nil) ; List:Bufferise mouse movement {y;x} form
