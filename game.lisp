@@ -13,7 +13,7 @@
 										(< j N)
 										(< i M)
 										(= (ignore-errors (aref current_grid j i)) 1) ; && Neighbor is alive
-										) 
+										)
 									   (setq sum (+ sum 1)) ; Then Add 1 to alive neighbor count
 									   ;; () ; else statement
 									   )))
@@ -56,7 +56,7 @@
 						do (
 							setf (aref current_grid y x) (aref next_grid y x)
 					)))
-				 )) 
+				 ))
 
 
 

@@ -1,9 +1,15 @@
 (load "variables.lisp")
 
 (defun zoomIn () (
-	let ()
-	(setq zoom (+ zoom 0.1))
-	(setq csize (* size zoom))
+	if (= zoom 1)
+		(format t "reach max zoom ~%")
+		(
+			let ()
+			(format t "zoom! ~%")
+			(setq zoom (- zoom 1))
+			(setq size (/ WIDTH zoom))
+			(redraw)
+		)
 ))
 
 (defun speedDown () (
@@ -26,6 +32,43 @@
 		)
 ))
 
+(defun moveUp () (
+	if (= offY 0)
+		nil
+		(progn
+			(setq offY (- offY 1))
+			(redraw)
+		)
+))
+
+(defun moveDown () (
+	if (= offY (- N 1))
+		nil
+		(progn
+			(setq offY (+ offY 1))
+			(redraw)
+		)
+))
+
+(defun moveLeft () (
+	if (= offX 0)
+		nil
+		(progn
+			(setq offX (- offX 1))
+			(redraw)
+		)
+))
+
+
+(defun moveRight () (
+	if (= offX (- M 1))
+		nil
+		(progn
+			(setq offX (+ offX 1))
+			(redraw)
+		)
+))
+
 (defun gamePause () (
 	let ()
 	(setq PAUSE (not PAUSE))
@@ -38,12 +81,15 @@
 	(setq PAUSE t)
 	(sdl:update-display)
 )
+
 ;;handle key events
 (defun handle-key (key)
 	(when (SDL:KEY= KEY :SDL-KEY-ESCAPE) (SDL:PUSH-QUIT-EVENT))
 	(when (SDL:KEY= KEY :SDL-KEY-a) (zoomIn))
-	(when (SDL:KEY= KEY :SDL-KEY-left) (speedDown))
-	(when (SDL:KEY= KEY :SDL-KEY-right) (speedUp))
+	(when (SDL:KEY= KEY :SDL-KEY-left) (moveLeft))
+	(when (SDL:KEY= KEY :SDL-KEY-right) (moveRight))
+	(when (SDL:KEY= KEY :SDL-KEY-up) (moveUp))
+	(when (SDL:KEY= KEY :SDL-KEY-down) (moveDown))
 	(when (SDL:KEY= KEY :SDL-KEY-p) (gamePause))
 	(when (SDL:KEY= KEY :SDL-KEY-r) (gameRestart))
 	;;check keys here: https://gitlab.com/dto/xelf/blob/master/keys.lisp
@@ -51,47 +97,53 @@
 
 (defun handle-click-mouse (button x y) (
 	let (
-		(bx (truncate (/ x csize)))
-		(by (truncate (/ y csize)))
+		(bx (+ (truncate (/ x size)) offX) )
+		(by (+ (truncate (/ y size)) offY) )
 	)
-	;; (format t "x ~d y ~d ~%" bx by)
-		(let (
-			(sx (+ (* bx csize) margin))
-			(sy (+ (* by csize) margin))
-		)
-			(let (
-				(sx2 (- (+ sx csize) margin))
-				(sy2 (- (+ sy csize) margin))
-			)
-			(if (and (and (>= x sx) (<= x sx2)) (and (>= y sy) (<= y sy2)))
-				(progn 
-				(setf (aref current_grid by bx) (if (= 1 (aref current_grid by bx)) DEAD ALIVE))
-				(draw by bx (if (= 1 (aref current_grid by bx)) ALIVE DEAD))
-				(sdl:update-display)
-				)
-		))
-)))
+	(setf (aref current_grid by bx) (if (= 1 (aref current_grid by bx)) DEAD ALIVE))
+	(draw by bx (if (= 1 (aref current_grid by bx)) ALIVE DEAD))
+	(sdl:update-display)
+))
 
 ;;DRAW on screen
-(defun draw (y x kind) (
+(defun is-in-rect (x y rx1 ry1 rx2 ry2) (
+	if (and (and (>= x rx1) (<= x rx2)) (and (>= y ry1) (<= y ry2)))
+		1
+		nil
+))
+
+(defun _draw (y x kind) (
 	let (
-		(sx (+ (* x csize) margin))
-		(sy (+ (* y csize) margin))
+		(sx (* (- x offX) size))
+		(sy (* (- y offY) size))
 	)
 	(sdl:draw-box
 		(sdl:rectangle-from-edges-* sx sy
-			(- (+ sx csize) margin)
-			(- (+ sy csize) margin)
+			(+ sx size)
+			(+ sy size)
 		)
 		:color (if (= kind DEAD) COLOR_DEAD COLOR_ALIVE)
 	)
 ))
 
+(defun draw (y x kind) (
+	if (is-in-rect x y offX offY (+ offX zoom) (+ offY zoom))
+			(_draw y x kind)
+			nil
+))
+
 (defun redraw () (
-	loop for y from 0 to (- N 1)
-		do (loop for x from 0 to (- M 1)
-			do (if (= (aref current_grid y x) 1)
-			(draw y x ALIVE)
-			(draw y x DEAD)
-		)
-)))
+	progn
+	(sdl:clear-display COLOR_BACKGROUND)
+	(loop for y from 0 to (- N 1)
+		do
+			(loop for x from 0 to (- M 1)
+			do
+				(if (= (aref current_grid y x) 1)
+					(draw y x ALIVE)
+					(draw y x DEAD)
+				)
+			)
+	)
+	(sdl:update-display)
+))
