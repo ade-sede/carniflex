@@ -46,7 +46,7 @@
 						(:quit-event () t)
 						(:key-down-event (:key key) (handle-key key))
 						(:mouse-button-up-event (:button button :x x :y y) (buttonUp button y x))
-						(:mouse-motion-event (:state state :x-rel x-rel :y-rel y-rel) (mouseMove y-rel x-rel state))
+						(:mouse-motion-event (:state state :x x :y y) (mouseMove y x state))
 						(:idle (
 							if (and
 								(not PAUSE)

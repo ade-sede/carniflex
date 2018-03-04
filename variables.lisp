@@ -33,6 +33,9 @@ Note: Integers are `one-indexed`")
 (defvar drag nil) ; Boolean: Are we currently dragging ?
 (defvar dragBuff nil) ; List:Bufferise mouse movement {y;x} form
 (defvar prevDrag 0)
+(defvar prevDragX 0)
+(defvar prevDragY 0)
+
 
 (defvar prev 0)
 (defvar time-to-wait 1000)
