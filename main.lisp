@@ -4,7 +4,15 @@
 (load "sdl.lisp")
 (load "game.lisp")
 
+(defun time-now () (
+    get-internal-real-time
+))
 
+(defun is-elapsed (prev elapse) (
+    if (>= (- (time-now) prev) elapse)
+        1
+        nil
+))
 
 (defun parse () (if (or
 					 (not *posix-argv*) ; No argv
@@ -22,7 +30,6 @@
 (defun main (argv)(
 				   let ()
 
-
 					;; Update grid dimensions
 					(setq M (parse-integer (nth 1 *posix-argv*)))
 					(setq N (parse-integer (nth 2 *posix-argv*)))
@@ -38,22 +45,27 @@
 					(setq size (/ WIDTH zoom))
 
 					(sdl:with-init ()
-					  (sdl:window width height :title-caption "Carniflex")
-					  (sdl:clear-display COLOR_BACKGROUND)
-					  (redraw)
+						(sdl:window width height :title-caption "Carniflex")
+						(sdl:clear-display COLOR_BACKGROUND)
+						(redraw)
 						(sdl:update-display)
-					  (setf (sdl:frame-rate) 40)
-					  (sdl:with-events ()
+						(setf (sdl:frame-rate) 40)
+						(setq prev (+ (time-now) time-to-wait))
+						(sdl:with-events ()
 						(:quit-event () t)
 						(:key-down-event (:key key) (handle-key key))
 						(:mouse-button-up-event (:button button :x x :y y) (buttonUp button y x))
 						(:mouse-motion-event (:state state :x-rel x-rel :y-rel y-rel) (mouseMove y-rel x-rel state))
 						(:idle (
-							if (not PAUSE)
+							if (and
+								(not PAUSE)
+								(is-elapsed prev time-to-wait)
+							)
 							(
 								let()
 							   (game)
 							   (sdl:update-display)
+								 (setq prev (time-now))
 							   )))
 						))
 					))

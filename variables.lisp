@@ -22,7 +22,6 @@ Note: Integers are `one-indexed`")
 (defvar COLOR_DEAD (sdl:color :r 0 :g 0 :b 0)) ;;black
 (defvar COLOR_BACKGROUND (sdl:color :r 0 :g 0 :b 255)) ;;white
 
-(defvar IMAGE_PER_SEC 50)
 (defvar PAUSE t)
 
 (defvar offX 0)
@@ -32,3 +31,6 @@ Note: Integers are `one-indexed`")
 (defvar size (/ WIDTH 16))
 (defvar drag nil) ; Boolean: Are we currently dragging ?
 (defvar dragBuff nil) ; List:Bufferise mouse movement {y;x} form
+
+(defvar prev 0)
+(defvar time-to-wait 1000)
