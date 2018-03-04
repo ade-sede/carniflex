@@ -36,6 +36,7 @@
 
 					(setq zoom (max N M))
 					(setq size (/ WIDTH zoom))
+					(setq prevDrag -1)
 
 					(sdl:with-init ()
 						(sdl:window width height :title-caption "Carniflex")

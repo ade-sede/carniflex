@@ -11,7 +11,7 @@
 ))
 
 (defun zoomIn () (
-				  if (>= zoom 1)
+				  if (> zoom 1)
 					 (
 					  let ()
 					   (setq zoom (- zoom 1))
@@ -117,9 +117,9 @@
 												(bx (+ (truncate (/ x size)) offX) )
 												(by (+ (truncate (/ y size)) offY) )
 											 )
+										(setq prevDrag -1)
 										 (if (is-in-rect bx by 0 0 M N)
 											 (if (/= prevDrag 0)
-												 (setq prevDrag 0)
 												 (progn
 												 	(setf (aref current_grid by bx) (if (= 1 (aref current_grid by bx)) DEAD ALIVE))
 											   	(draw by bx (if (= 1 (aref current_grid by bx)) ALIVE DEAD))
@@ -201,7 +201,7 @@
 (defun mouseMove (y x state) (
 	if (= state 1)
 	(progn
-		(if (= prevDrag 0)
+		(if (= prevDrag -1)
 			(progn (setq prevDragX x) (setq prevDragY y) (setq prevDrag (time-now)) )
 		)
 		(if (is-elapsed prevDrag 50)

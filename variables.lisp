@@ -32,7 +32,7 @@ Note: Integers are `one-indexed`")
 (defvar size (/ WIDTH 16))
 (defvar drag nil) ; Boolean: Are we currently dragging ?
 (defvar dragBuff nil) ; List:Bufferise mouse movement {y;x} form
-(defvar prevDrag 0)
+(defvar prevDrag -1)
 (defvar prevDragX 0)
 (defvar prevDragY 0)
 
