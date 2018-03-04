@@ -12,10 +12,8 @@
 
 (defun zoomIn () (
 				  if (= zoom 1)
-					 (format t "Reached max zoom ~%")
 					 (
 					  let ()
-					   (format t "zoom! ~%")
 					   (setq zoom (- zoom 1))
 					   ;; (setq offX (+ offX 1))
 					   ;; (setq offY (+ offY 1))
@@ -26,10 +24,8 @@
 
 (defun zoomOut () (
 				  if (= zoom (+ (greater N M) 3))
-					 (format t "Reached max zoom ~%")
 					 (
 					  let ()
-					   (format t "zoom-out! ~%")
 					   (setq zoom (+ zoom 1))
 					   (setq size (/ WIDTH zoom))
 					   (redraw)
@@ -38,7 +34,6 @@
 
 (defun speedUp () (
 				   if (<= time-to-wait 100)
-					  (format t "can't speed more ~%")
 					  (
 							let ()
 							(setq time-to-wait (- time-to-wait 100))
@@ -47,47 +42,46 @@
 
 (defun speedDown () (
 				   if (>= time-to-wait 5000)
-					  (format t "can't speed more ~%")
 					  (
 							let ()
 							(setq time-to-wait (+ time-to-wait 100))
 						)
 					  ))
 
-(defun moveUp () (
+(defun moveUp (&optional (do-redraw t)) (
 				  if (= offY (- 0 N))
 					 nil
 					 (progn
 					   (setq offY (- offY 1))
-					   (redraw)
+					   (if do-redraw (redraw))
 					   )
-					 ))
+	))
 
-(defun moveDown () (
+(defun moveDown (&optional (do-redraw t)) (
 					if (= offY (- N 1))
 					   nil
 					   (progn
 						 (setq offY (+ offY 1))
-						 (redraw)
+						 (if do-redraw (redraw))
 						 )
 					   ))
 
-(defun moveLeft () (
+(defun moveLeft (&optional (do-redraw t)) (
 					if (= offX (- 0 M))
 					   nil
 					   (progn
 						 (setq offX (- offX 1))
-						 (redraw)
+						 (if do-redraw (redraw))
 						 )
 					   ))
 
 
-(defun moveRight () (
+(defun moveRight (&optional (do-redraw t)) (
 					 if (= offX (- M 1))
 						nil
 						(progn
 						  (setq offX (+ offX 1))
-						  (redraw)
+						  (if do-redraw (redraw))
 						  )
 						))
 
@@ -125,7 +119,6 @@
 												(bx (+ (truncate (/ x size)) offX) )
 												(by (+ (truncate (/ y size)) offY) )
 											 )
-											 (format t "y: ~D x: ~D ~%" bx by)
 										 (if (is-in-rect bx by 0 0 M N)
 											 (if (/= prevDrag 0)
 												 (setq prevDrag 0)
@@ -196,8 +189,10 @@
 
 (defun repeat (x fn) (
 	if (>= x 1) (
-		loop for i from 0 to (- x 1) do (funcall fn)
-	)
+		progn
+			(loop for i from 0 to (- x 1) do (funcall fn nil))
+			(redraw)
+		)
 ))
 
 (defun times (preva a)
@@ -213,7 +208,6 @@
 		)
 		(if (is-elapsed prevDrag 50)
 			(progn
-				(format t "ok ~d || ~d ~d , old: ~d ~d , d: ~d ~d ~%" size y x prevDragX prevDragY (dist prevDragX x) (dist prevDragY y))
 				(if (>= (dist prevDragX x) size) (repeat (times prevDragX x) (function moveRight)))
 				(if (<= (dist prevDragX x) (- 0 size)) (repeat (times prevDragX x) (function moveLeft)))
 				(if (>= (dist prevDragY y) size) (repeat (times prevDragY y) (function moveDown)))

@@ -13,6 +13,8 @@
 						   (typep (ignore-errors (parse-integer (nth 2 *posix-argv*))) 'integer)
 						   (< 0 (ignore-errors (parse-integer (nth 1 *posix-argv*))))
 						   (< 0 (ignore-errors (parse-integer (nth 2 *posix-argv*))))
+							 (> 150 (ignore-errors (parse-integer (nth 1 *posix-argv*))))
+						   (> 150 (ignore-errors (parse-integer (nth 2 *posix-argv*))))
 						   )))
 					(print *usage-string*) ; Raise error
 					(main *posix-argv*) ; Go on

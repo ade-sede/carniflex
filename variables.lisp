@@ -8,8 +8,8 @@
 
 (defvar *usage-string* "Usage: sbcl --script main.lisp height width
 
-With:		height, non-zero positiv integer, the height of the grid
-	width, non-zero positiv integer, the width of the grid
+With:		height, non-zero positiv integer <= 150, the height of the grid
+	width, non-zero positiv integer <= 150, the width of the grid
 
 Note: Integers are `one-indexed`")
 
