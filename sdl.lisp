@@ -31,6 +31,13 @@
 	(setq PAUSE (not PAUSE))
 ))
 
+
+(defun gameRestart ()
+	(setq current_grid (make-array (list N M)))
+	(redraw)
+	(setq PAUSE t)
+	(sdl:update-display)
+)
 ;;handle key events
 (defun handle-key (key)
 	(when (SDL:KEY= KEY :SDL-KEY-ESCAPE) (SDL:PUSH-QUIT-EVENT))
@@ -38,6 +45,7 @@
 	(when (SDL:KEY= KEY :SDL-KEY-left) (speedDown))
 	(when (SDL:KEY= KEY :SDL-KEY-right) (speedUp))
 	(when (SDL:KEY= KEY :SDL-KEY-p) (gamePause))
+	(when (SDL:KEY= KEY :SDL-KEY-r) (gameRestart))
 	;;check keys here: https://gitlab.com/dto/xelf/blob/master/keys.lisp
 )
 
@@ -55,12 +63,14 @@
 				(sx2 (- (+ sx csize) margin))
 				(sy2 (- (+ sy csize) margin))
 			)
-			(if (and (and (>= x sx) (<= x sx2)) (and (>= y sy) (<= y sy2)) )
-				(progn (setf (aref current_grid by bx) ALIVE) (draw by bx ALIVE) (sdl:update-display)) ;;in
-				;; (format t "OUT ~%" sx sy) ;;out
-			)
+			(if (and (and (>= x sx) (<= x sx2)) (and (>= y sy) (<= y sy2)))
+				(progn 
+				(setf (aref current_grid by bx) (if (= 1 (aref current_grid by bx)) DEAD ALIVE))
+				(draw by bx (if (= 1 (aref current_grid by bx)) ALIVE DEAD))
+				(sdl:update-display)
+				)
 		))
-))
+)))
 
 ;;DRAW on screen
 (defun draw (y x kind) (

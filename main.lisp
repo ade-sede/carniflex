@@ -37,6 +37,7 @@
 					  (sdl:window width height :title-caption "Carniflex")
 					  (sdl:clear-display COLOR_BACKGROUND)
 					  (redraw)
+						(sdl:update-display)
 					  (setf (sdl:frame-rate) IMAGE_PER_SEC)
 					  (sdl:with-events ()
 						(:quit-event () t)
