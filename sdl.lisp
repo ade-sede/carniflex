@@ -33,19 +33,13 @@
 					 ))
 
 (defun speedUp () (
-				   if (<= time-to-wait 100)
-					  (
-							let ()
+				   if (>= time-to-wait 100)
 							(setq time-to-wait (- time-to-wait 100))
-						)
 					  ))
 
 (defun speedDown () (
-				   if (>= time-to-wait 5000)
-					  (
-							let ()
+				   if (<= time-to-wait 5000)
 							(setq time-to-wait (+ time-to-wait 100))
-						)
 					  ))
 
 (defun moveUp (&optional (do-redraw t)) (
@@ -109,8 +103,8 @@
   (when (SDL:KEY= KEY :SDL-KEY-down) (moveDown))
   (when (SDL:KEY= KEY :SDL-KEY-p) (gamePause))
 	(when (SDL:KEY= KEY :SDL-KEY-r) (gameRestart))
-  (when (SDL:KEY= KEY :SDL-KEY-a) (speedUp))
-  (when (SDL:KEY= KEY :SDL-KEY-s) (speedDown))
+  (when (SDL:KEY= KEY :SDL-KEY-period) (speedUp))
+  (when (SDL:KEY= KEY :SDL-KEY-comma) (speedDown))
   ;;check keys here: https://gitlab.com/dto/xelf/blob/master/keys.lisp
   )
 
