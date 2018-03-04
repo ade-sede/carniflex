@@ -37,10 +37,10 @@
 					(setq zoom (max N M))
 					(setq size (/ WIDTH zoom))
 					(setq prevDrag -1)
-
 					(sdl:with-init ()
 						(sdl:window width height :title-caption "Carniflex")
 						(sdl:clear-display COLOR_BACKGROUND)
+						(sdl:enable-key-repeat 30 30)
 						(redraw)
 						(sdl:update-display)
 						(setf (sdl:frame-rate) 40)
