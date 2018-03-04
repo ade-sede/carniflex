@@ -112,12 +112,15 @@
 											 )
 											 (format t "y: ~D x: ~D ~%" bx by)
 										 (if (is-in-rect bx by 0 0 M N)
-											 (progn
-											   (setf (aref current_grid by bx) (if (= 1 (aref current_grid by bx)) DEAD ALIVE))
-											   (draw by bx (if (= 1 (aref current_grid by bx)) ALIVE DEAD))
-											   (sdl:update-display)
+											 (if (/= prevDrag 0)
+												 (setq prevDrag 0)
+												 (progn
+												 	(setf (aref current_grid by bx) (if (= 1 (aref current_grid by bx)) DEAD ALIVE))
+											   	(draw by bx (if (= 1 (aref current_grid by bx)) ALIVE DEAD))
+											   	(sdl:update-display)
 											   )
 											 )
+											)
 										 ))
 
 ;;DRAW on screen
@@ -172,44 +175,38 @@
 							   (setf drag nil)
 							   ))
 
-(defun mouseMove (y-rel x-rel state) (
-										let (
-												(nsize (* -1 size))
-											)
-									   (if (or (= 0 prevDrag) (is-elapsed prevDrag 100))
-										   (
-if (= state 1)
-										 (progn
-										   (setf drag t)
-										   (setf (nth 0 dragBuff) (+ (nth 0 dragBuff) y-rel)) ; Add y movement
-										   (setf (nth 1 dragBuff) (+ (nth 1 dragBuff) x-rel)) ; Add x movement
-										   ;; If movement exceeds size of a cell, move 1 in the right direction
+(defun dist (a b) (
+		- a b
+))
 
-										   ;; (format t "y: ~D x: ~D ~%" y-rel x-rel)
+(defun repeat (x fn) (
+	if (>= x 1) (
+		loop for i from 0 to (- x 1) do (funcall fn)
+	)
+))
 
-											 
+(defun times (preva a)
+		(/ (abs (dist preva a)) size)
+)
 
-										   (cond
-											 ((>= nsize (nth 1 dragBuff) )(progn			;Left
-																		  (moveLeft)
-																		  (setf (nth 1 dragBuff) (+ (nth 1 dragBuff) size))
-																		  ))
-										   ((>= size (nth 1 dragBuff)) (progn				;Right
-																	   (moveRight)
-																	   (setf (nth 1 dragBuff) (- (nth 1 dragBuff) size))
-																	   ))
-											 ((>= nsize (nth 0 dragBuff) )(progn			;Up
-																		  (moveUp)
-																		  (setf (nth 0 dragBuff) (+ (nth 0 dragBuff) size))
-																		  ))
-										   ((>= size (nth 0 dragBuff)) (progn				;Down
-																	   (moveDown)
-																	   (setf (nth 0 dragBuff) (- (nth 0 dragBuff) size))
-																	   ))
-										  )
-										   (setq prevDrag (time-now))
-										 )
-											)
-										   )
-									  
+
+(defun mouseMove (y x state) (
+	if (= state 1)
+	(progn
+		(if (= prevDrag 0)
+			(progn (setq prevDragX x) (setq prevDragY y) (setq prevDrag (time-now)) )
+		)
+		(if (is-elapsed prevDrag 50)
+			(progn
+				(format t "ok ~d || ~d ~d , old: ~d ~d , d: ~d ~d ~%" size y x prevDragX prevDragY (dist prevDragX x) (dist prevDragY y))
+				(if (>= (dist prevDragX x) size) (repeat (times prevDragX x) (function moveRight)))
+				(if (<= (dist prevDragX x) (- 0 size)) (repeat (times prevDragX x) (function moveLeft)))
+				(if (>= (dist prevDragY y) size) (repeat (times prevDragY y) (function moveDown)))
+				(if (<= (dist prevDragY y) (- 0 size)) (repeat (times prevDragY y) (function moveUp)))
+				(setq prevDragX x)
+				(setq prevDragy y)
+				(setq prevDrag (time-now))
+			)
+		)
+	)
 ))
