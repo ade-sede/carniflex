@@ -11,7 +11,7 @@
 ))
 
 (defun zoomIn () (
-				  if (= zoom 1)
+				  if (>= zoom 1)
 					 (
 					  let ()
 					   (setq zoom (- zoom 1))
@@ -23,7 +23,7 @@
 					 ))
 
 (defun zoomOut () (
-				  if (= zoom (+ (greater N M) 3))
+				  if (<= zoom (+ (greater N M) 3))
 					 (
 					  let ()
 					   (setq zoom (+ zoom 1))
