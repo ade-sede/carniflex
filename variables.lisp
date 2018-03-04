@@ -1,4 +1,5 @@
 ;;const
+
 (defconstant WIDTH 720)
 (defconstant HEIGHT 720)
 
@@ -35,3 +36,8 @@ Note: Integers are `one-indexed`")
 
 (defvar prev 0)
 (defvar time-to-wait 1000)
+
+
+;; Utility
+
+(defun greater (a b) (if (> a b) a b))

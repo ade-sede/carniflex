@@ -12,25 +12,29 @@
 
 (defun zoomIn () (
 				  if (= zoom 1)
-					 (format t "reach max zoom ~%")
+					 (format t "Reached max zoom ~%")
 					 (
 					  let ()
 					   (format t "zoom! ~%")
 					   (setq zoom (- zoom 1))
+					   ;; (setq offX (+ offX 1))
+					   ;; (setq offY (+ offY 1))
 					   (setq size (/ WIDTH zoom))
 					   (redraw)
 					   )
 					 ))
 
-(defun speedDown () (
-					 if (= IMAGE_PER_SEC 1)
-						(format t "can't speed less ~%")
-						(
-						 let ()
-						  (setq IMAGE_PER_SEC (- IMAGE_PER_SEC 1))
-						  (setf (sdl:frame-rate) IMAGE_PER_SEC)
-						  )
-						))
+(defun zoomOut () (
+				  if (= zoom (+ (greater N M) 3))
+					 (format t "Reached max zoom ~%")
+					 (
+					  let ()
+					   (format t "zoom-out! ~%")
+					   (setq zoom (+ zoom 1))
+					   (setq size (/ WIDTH zoom))
+					   (redraw)
+					   )
+					 ))
 
 (defun speedUp () (
 				   if (<= time-to-wait 100)
@@ -38,6 +42,15 @@
 					  (
 							let ()
 							(setq time-to-wait (- time-to-wait 100))
+						)
+					  ))
+
+(defun speedDown () (
+				   if (>= time-to-wait 5000)
+					  (format t "can't speed more ~%")
+					  (
+							let ()
+							(setq time-to-wait (+ time-to-wait 100))
 						)
 					  ))
 
@@ -95,6 +108,7 @@
 (defun handle-key (key)
   (when (SDL:KEY= KEY :SDL-KEY-ESCAPE) (SDL:PUSH-QUIT-EVENT))
 	(when (SDL:KEY= KEY :SDL-KEY-KP-PLUS) (zoomIn))
+	(when (SDL:KEY= KEY :SDL-KEY-KP-MINUS) (zoomOut))
   (when (SDL:KEY= KEY :SDL-KEY-left) (moveLeft))
   (when (SDL:KEY= KEY :SDL-KEY-right) (moveRight))
   (when (SDL:KEY= KEY :SDL-KEY-up) (moveUp))
@@ -102,6 +116,7 @@
   (when (SDL:KEY= KEY :SDL-KEY-p) (gamePause))
 	(when (SDL:KEY= KEY :SDL-KEY-r) (gameRestart))
   (when (SDL:KEY= KEY :SDL-KEY-a) (speedUp))
+  (when (SDL:KEY= KEY :SDL-KEY-s) (speedDown))
   ;;check keys here: https://gitlab.com/dto/xelf/blob/master/keys.lisp
   )
 
