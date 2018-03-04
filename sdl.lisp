@@ -157,41 +157,42 @@
 							   (if (not drag)
 								   (handle-click-mouse button y x)
 								   )
-							   (setf dragBuff (list 0 0))
+							   (setq dragBuff (list 0 0))
 							   (setf drag nil)
 							   ))
 
 (defun mouseMove (y-rel x-rel state) (
-									  if (= state 1)
+										let (
+												(nsize (* -1 size))
+											)
+									  (if (= state 1)
 										 (progn
 										   (setf drag t)
 										   (setf (nth 0 dragBuff) (+ (nth 0 dragBuff) y-rel)) ; Add y movement
 										   (setf (nth 1 dragBuff) (+ (nth 1 dragBuff) x-rel)) ; Add x movement
 										   ;; If movement exceeds size of a cell, move 1 in the right direction
-										   (format t "y: ~D x: ~D ~%" y-rel x-rel)
+
+										   ;; (format t "y: ~D x: ~D ~%" y-rel x-rel)
+
+											 
+
 										   (cond
-											 ((>= size (abs (nth 0 dragBuff))) (if (> 0 (nth 0 dragBuff))	; Up or down ?
-																				   (progn					; Down
-																					 (moveDown)
-																					 (setf (nth 0 dragBuff) (- (nth 0 dragBuff) size))
-																					 )
-																				   (progn
-																					 (moveUp)				; Up
-																					 (setf (nth 0 dragBuff) (- (nth 0 dragBuff) size))
-																					 )				   
-																				   )
-											  )
-											 ((>= size (abs (nth 1 dragBuff))) (if (> 0 (nth 1 dragbuff))	; Left or right ?
-																				   (progn					; Left
-																					 (moveLeft)
-																					 (setf (nth 1 dragBuff) (- (nth 1 dragBuff) size))
-																					 )
-																				   (progn					; Right
-																					 (moveRight)
-																					 (setf (nth 1 dragBuff) (- (nth 1 dragBuff) size))
-																					 )				   
-																				   )
-											  )
-											 )
-										   )
+											 ((>= nsize (nth 1 dragBuff) )(progn			;Left
+																		  (moveLeft)
+																		  (setf (nth 1 dragBuff) (+ (nth 1 dragBuff) size))
+																		  ))
+										   ((>= size (nth 1 dragBuff)) (progn				;Right
+																	   (moveRight)
+																	   (setf (nth 1 dragBuff) (- (nth 1 dragBuff) size))
+																	   ))
+											 ((>= nsize (nth 0 dragBuff) )(progn			;Up
+																		  (moveUp)
+																		  (setf (nth 0 dragBuff) (+ (nth 0 dragBuff) size))
+																		  ))
+										   ((>= size (nth 0 dragBuff)) (progn				;Down
+																	   (moveDown)
+																	   (setf (nth 0 dragBuff) (- (nth 0 dragBuff) size))
+																	   ))
+										  )
 										 ))
+))
