@@ -117,16 +117,16 @@
 												(bx (+ (truncate (/ x size)) offX) )
 												(by (+ (truncate (/ y size)) offY) )
 											 )
-										(setq prevDrag -1)
-										 (if (is-in-rect bx by 0 0 M N)
-											 (if (/= prevDrag 0)
+										(if (= prevDrag -1)
+												(if (is-in-rect bx by 0 0 M N)
 												 (progn
 												 	(setf (aref current_grid by bx) (if (= 1 (aref current_grid by bx)) DEAD ALIVE))
 											   	(draw by bx (if (= 1 (aref current_grid by bx)) ALIVE DEAD))
 											   	(sdl:update-display)
 											   )
 											 )
-											)
+										)
+										(setq prevDrag -1)
 										 ))
 
 ;;DRAW on screen
