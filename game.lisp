@@ -43,21 +43,22 @@
 						  do (
 							  let ()
 							   (setq sum (get_sum y x)) ; Number of alive neighboor
-							   (my_debug sum y x)
+							   ;;(my_debug sum y x)
 							   (setf (aref next_grid y x) (cond ; Select new state
 															((or (> 2 sum) (< 3 sum)) 0)
 															((= sum 3)  1)
 															(t (aref current_grid y x))
 															)
 									 )
-									 (redraw)
 							   )))
 
 				 ;; (format t "~% Next grid when exiting the game ~% -------------------- ~% ~A" next_grid)
-				 
+
 				(loop for y from 0 to (- N 1)
 					do (loop for x from 0 to (- M 1)
 						do (
 							setf (aref current_grid y x) (aref next_grid y x)
 					)))
+
+					(redraw)
 				 ))

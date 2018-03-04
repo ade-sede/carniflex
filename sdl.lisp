@@ -1,5 +1,15 @@
 (load "variables.lisp")
 
+(defun time-now () (
+    get-internal-real-time
+))
+
+(defun is-elapsed (prev elapse) (
+    if (>= (- (time-now) prev) elapse)
+        1
+        nil
+))
+
 (defun zoomIn () (
 				  if (= zoom 1)
 					 (format t "reach max zoom ~%")
@@ -23,17 +33,16 @@
 						))
 
 (defun speedUp () (
-				   if (= IMAGE_PER_SEC 50)
+				   if (<= time-to-wait 100)
 					  (format t "can't speed more ~%")
 					  (
-					   let ()
-						(setq IMAGE_PER_SEC (+ IMAGE_PER_SEC 1))
-						(setf (sdl:frame-rate) IMAGE_PER_SEC)
+							let ()
+							(setq time-to-wait (- time-to-wait 100))
 						)
 					  ))
 
 (defun moveUp () (
-				  if (= offY 0)
+				  if (= offY (- 0 N))
 					 nil
 					 (progn
 					   (setq offY (- offY 1))
@@ -51,7 +60,7 @@
 					   ))
 
 (defun moveLeft () (
-					if (= offX 0)
+					if (= offX (- 0 M))
 					   nil
 					   (progn
 						 (setq offX (- offX 1))
@@ -85,22 +94,24 @@
 ;;handle key events
 (defun handle-key (key)
   (when (SDL:KEY= KEY :SDL-KEY-ESCAPE) (SDL:PUSH-QUIT-EVENT))
-  (when (SDL:KEY= KEY :SDL-KEY-a) (zoomIn))
+	(when (SDL:KEY= KEY :SDL-KEY-KP-PLUS) (zoomIn))
   (when (SDL:KEY= KEY :SDL-KEY-left) (moveLeft))
   (when (SDL:KEY= KEY :SDL-KEY-right) (moveRight))
   (when (SDL:KEY= KEY :SDL-KEY-up) (moveUp))
   (when (SDL:KEY= KEY :SDL-KEY-down) (moveDown))
   (when (SDL:KEY= KEY :SDL-KEY-p) (gamePause))
-  (when (SDL:KEY= KEY :SDL-KEY-r) (gameRestart))
+	(when (SDL:KEY= KEY :SDL-KEY-r) (gameRestart))
+  (when (SDL:KEY= KEY :SDL-KEY-a) (speedUp))
   ;;check keys here: https://gitlab.com/dto/xelf/blob/master/keys.lisp
   )
 
 (defun handle-click-mouse (button y x) (
 										let (
-											 (bx (+ (truncate (/ x size)) offX) )
-											 (by (+ (truncate (/ y size)) offY) )
+												(bx (+ (truncate (/ x size)) offX) )
+												(by (+ (truncate (/ y size)) offY) )
 											 )
-										 (if (or (< N by) (< M bx))
+											 (format t "y: ~D x: ~D ~%" bx by)
+										 (if (is-in-rect bx by 0 0 M N)
 											 (progn
 											   (setf (aref current_grid by bx) (if (= 1 (aref current_grid by bx)) DEAD ALIVE))
 											   (draw by bx (if (= 1 (aref current_grid by bx)) ALIVE DEAD))
@@ -132,9 +143,9 @@
 
 (defun draw (y x kind) (
 						if (is-in-rect x y offX offY (+ offX zoom) (+ offY zoom))
-						   (_draw y x kind)
-						   nil
-						   ))
+							(_draw y x kind)
+								nil
+							))
 
 (defun redraw () (
 				  progn
@@ -157,7 +168,7 @@
 							   (if (not drag)
 								   (handle-click-mouse button y x)
 								   )
-							   (setq dragBuff (list 0 0))
+							   (setf dragBuff (list 0 0))
 							   (setf drag nil)
 							   ))
 
@@ -165,7 +176,9 @@
 										let (
 												(nsize (* -1 size))
 											)
-									  (if (= state 1)
+									   (if (or (= 0 prevDrag) (is-elapsed prevDrag 100))
+										   (
+if (= state 1)
 										 (progn
 										   (setf drag t)
 										   (setf (nth 0 dragBuff) (+ (nth 0 dragBuff) y-rel)) ; Add y movement
@@ -194,5 +207,9 @@
 																	   (setf (nth 0 dragBuff) (- (nth 0 dragBuff) size))
 																	   ))
 										  )
-										 ))
+										   (setq prevDrag (time-now))
+										 )
+											)
+										   )
+									  
 ))
