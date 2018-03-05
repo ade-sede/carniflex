@@ -1,4 +1,4 @@
-(load "~/.sbcl/quicklisp/setup.lisp")
+(load "~/quicklisp/setup.lisp")
 (ql:quickload "lispbuilder-sdl")
 (load "variables.lisp")
 (load "sdl.lisp")
