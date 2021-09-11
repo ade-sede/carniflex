@@ -106,7 +106,7 @@
   (when (SDL:KEY= KEY :SDL-KEY-w) (moveUp))
   (when (SDL:KEY= KEY :SDL-KEY-s) (moveDown))
   (when (SDL:KEY= KEY :SDL-KEY-p) (gamePause))
-	(when (SDL:KEY= KEY :SDL-KEY-r) (gameRestart))
+	(when (SDL:KEY= KEY :SDL-KEY-r) (ingameRestart))
   (when (SDL:KEY= KEY :SDL-KEY-period) (speedUp))
   (when (SDL:KEY= KEY :SDL-KEY-comma) (speedDown))
   ;;check keys here: https://gitlab.com/dto/xelf/blob/master/keys.lisp
